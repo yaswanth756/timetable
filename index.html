@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>My Weekly Schedule</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Arial', sans-serif;
+            background: #f0f2f5;
+            color: #2c3e50;
+            line-height: 1.5;
+        }
+        .container {
+            width: 100%;
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 10px;
+        }
+        .schedule-header {
+            text-align: center;
+            margin-bottom: 15px;
+            color: #5d7b9b;
+        }
+        .day-selector {
+            display: flex;
+            overflow-x: auto;
+            gap: 8px;
+            margin-bottom: 15px;
+            padding: 5px;
+        }
+        .day-btn {
+            flex: 1;
+            background: transparent;
+            border: 1px solid #6a8baf;
+            color: #6a8baf;
+            padding: 8px;
+            border-radius: 15px;
+            text-align: center;
+            white-space: nowrap;
+            font-size: 0.8em;
+            transition: all 0.3s ease;
+        }
+        .day-btn.active {
+            background: #6a8baf;
+            color: white;
+        }
+        .schedule-content {
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            padding: 10px;
+        }
+        .schedule-item {
+            display: flex;
+            align-items: center;
+            margin-bottom: 10px;
+            padding: 10px;
+            background: #f4f6f7;
+            border-radius: 8px;
+            border-left: 4px solid #6a8baf;
+        }
+        .schedule-icon {
+            font-size: 24px;
+            color: #6a8baf;
+            margin-right: 15px;
+            width: 40px;
+            text-align: center;
+        }
+        .schedule-details {
+            flex-grow: 1;
+        }
+        .schedule-time {
+            display: block;
+            font-weight: bold;
+            color: #5d7b9b;
+            margin-bottom: 4px;
+            font-size: 0.9em;
+        }
+        .schedule-activity {
+            font-size: 0.85em;
+            color: #2c3e50;
+            opacity: 0.9;
+        }
+        @media (max-width: 480px) {
+            .day-selector {
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+            .day-btn {
+                flex: 0 1 calc(33.333% - 8px);
+                margin: 4px;
+            }
+            .schedule-item {
+                flex-direction: column;
+                align-items: center;
+                text-align: center;
+            }
+            .schedule-icon {
+                margin-right: 0;
+                margin-bottom: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1 class="schedule-header">My Weekly Schedule</h1>
+        <div class="day-selector" id="daySelector"></div>
+        <div class="schedule-content" id="scheduleContent"></div>
+    </div>
+
+    <script>
+        const schedule = {
+            "Monday": [
+                {"icon": "bed", "time": "7:10 - 9:00 AM", "activity": "Wake up, read the newspaper"},
+                {"icon": "graduation-cap", "time": "9:00 AM - 4:00 PM", "activity": "Classes"},
+                {"icon": "book", "time": "4:10 - 6:00 PM", "activity": "Library: Study academic subjects"},
+                {"icon": "mobile-alt", "time": "6:00 - 7:00 PM", "activity": "Break: Refresh, check Instagram, messages"},
+                {"icon": "podcast", "time": "7:00 - 8:00 PM", "activity": "Productivity: Books, YouTube, Podcasts"},
+                {"icon": "utensils", "time": "8:00 - 9:00 PM", "activity": "Dinner"},
+                {"icon": "code", "time": "9:30 - 11:30 PM", "activity": "DSA with C++"}
+            ],
+            "Tuesday": [
+                {"icon": "bed", "time": "7:10 - 9:00 AM", "activity": "Wake up, read the newspaper"},
+                {"icon": "graduation-cap", "time": "9:00 AM - 1:00 PM", "activity": "Classes"},
+                {"icon": "utensils", "time": "1:00 - 2:30 PM", "activity": "Lunch"},
+                {"icon": "book", "time": "2:30 - 6:00 PM", "activity": "Study (Academic + DSA C++)"},
+                {"icon": "mobile-alt", "time": "6:00 - 7:00 PM", "activity": "Relax, time pass, Instagram"},
+                {"icon": "podcast", "time": "7:00 - 8:00 PM", "activity": "Productivity"},
+                {"icon": "code", "time": "9:30 - 11:30 PM", "activity": "DSA with C++"}
+            ],
+            "Wednesday": [
+                {"icon": "bed", "time": "7:10 - 9:00 AM", "activity": "Wake up, read the newspaper"},
+                {"icon": "graduation-cap", "time": "9:00 AM - 3:00 PM", "activity": "Classes"},
+                {"icon": "tshirt", "time": "3:00 - 4:00 PM", "activity": "Laundry, other tasks"},
+                {"icon": "laptop", "time": "4:00 - 6:00 PM", "activity": "AI & ML learning, exploring technologies"},
+                {"icon": "mobile-alt", "time": "6:00 - 7:00 PM", "activity": "Relax, time pass, Instagram"},
+                {"icon": "podcast", "time": "7:00 - 8:00 PM", "activity": "Productivity"},
+                {"icon": "code", "time": "9:30 - 11:30 PM", "activity": "DSA with C++"}
+            ],
+            "Thursday": [
+                {"icon": "bed", "time": "7:10 - 9:00 AM", "activity": "Wake up, read the newspaper"},
+                {"icon": "graduation-cap", "time": "9:00 AM - 4:00 PM", "activity": "Classes"},
+                {"icon": "book", "time": "4:10 - 6:00 PM", "activity": "Library: Study academic subjects"},
+                {"icon": "mobile-alt", "time": "6:00 - 7:00 PM", "activity": "Break: Refresh, check Instagram, messages"},
+                {"icon": "podcast", "time": "7:00 - 8:00 PM", "activity": "Productivity: Books, YouTube, Podcasts"},
+                {"icon": "utensils", "time": "8:00 - 9:00 PM", "activity": "Dinner"},
+                {"icon": "code", "time": "9:30 - 11:30 PM", "activity": "DSA with C++"}
+            ],
+            "Friday": [
+                {"icon": "bed", "time": "7:10 - 9:00 AM", "activity": "Wake up, read the newspaper"},
+                {"icon": "graduation-cap", "time": "9:00 AM - 4:00 PM", "activity": "Classes"},
+                {"icon": "book", "time": "4:10 - 6:00 PM", "activity": "Library: Study academic subjects"},
+                {"icon": "mobile-alt", "time": "6:00 - 7:00 PM", "activity": "Break: Refresh, check Instagram, messages"},
+                {"icon": "podcast", "time": "7:00 - 8:00 PM", "activity": "Productivity: Books, YouTube, Podcasts"},
+                {"icon": "utensils", "time": "8:00 - 9:00 PM", "activity": "Dinner"},
+                {"icon": "code", "time": "9:30 - 11:30 PM", "activity": "DSA with C++"}
+            ],
+            "Saturday": [
+                {"icon": "laptop", "time": "10:00 AM - 1:00 PM", "activity": "MERN stack work: Learning/building projects"},
+                {"icon": "utensils", "time": "1:00 - 2:30 PM", "activity": "Lunch"},
+                {"icon": "code", "time": "3:00 - 5:00 PM", "activity": "DSA with C++"},
+                {"icon": "coffee", "time": "5:00 - 7:00 PM", "activity": "Break, time pass, relaxation"},
+                {"icon": "podcast", "time": "7:00 - 8:00 PM", "activity": "Productivity"},
+                {"icon": "utensils", "time": "8:00 - 9:00 PM", "activity": "Dinner"},
+                {"icon": "laptop", "time": "9:30 - 11:30 PM", "activity": "MERN stack work: Learning/building projects"}
+            ],
+            "Sunday": [
+                {"icon": "laptop", "time": "10:00 AM - 1:00 PM", "activity": "MERN stack work: Learning/building projects"},
+                {"icon": "utensils", "time": "1:00 - 2:30 PM", "activity": "Lunch"},
+                {"icon": "code", "time": "3:00 - 5:00 PM", "activity": "DSA with C++"},
+                {"icon": "coffee", "time": "5:00 - 7:00 PM", "activity": "Break, time pass, relaxation"},
+                {"icon": "podcast", "time": "7:00 - 8:00 PM", "activity": "Productivity"},
+                {"icon": "utensils", "time": "8:00 - 9:00 PM", "activity": "Dinner"},
+                {"icon": "laptop", "time": "9:30 - 11:30 PM", "activity": "MERN stack work: Learning/building projects"}
+            ]
+            // Other days remain the same as in previous versions
+        };
+
+        const daySelector = document.getElementById('daySelector');
+        const scheduleContent = document.getElementById('scheduleContent');
+
+        Object.keys(schedule).forEach((day, index) => {
+            const dayBtn = document.createElement('button');
+            dayBtn.classList.add('day-btn');
+            if (index === 0) dayBtn.classList.add('active');
+            dayBtn.textContent = day;
+            dayBtn.onclick = () => showDay(day);
+            daySelector.appendChild(dayBtn);
+        });
+
+        function showDay(day) {
+            document.querySelectorAll('.day-btn').forEach(btn => {
+                btn.classList.remove('active');
+                if (btn.textContent === day) btn.classList.add('active');
+            });
+
+            scheduleContent.innerHTML = '';
+
+            schedule[day].forEach(item => {
+                const scheduleItem = document.createElement('div');
+                scheduleItem.classList.add('schedule-item');
+                
+                scheduleItem.innerHTML = `
+                    <div class="schedule-icon">
+                        <i class="fas fa-${item.icon}"></i>
+                    </div>
+                    <div class="schedule-details">
+                        <span class="schedule-time">${item.time}</span>
+                        <span class="schedule-activity">${item.activity}</span>
+                    </div>
+                `;
+
+                scheduleContent.appendChild(scheduleItem);
+            });
+        }
+
+        showDay('Monday');
+    </script>
+</body>
+</html>

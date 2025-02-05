@@ -28,6 +28,43 @@
             margin-bottom: 15px;
             color: #5d7b9b;
         }
+        .streak-container {
+            background: white;
+            border-radius: 10px;
+            padding: 8px;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+        .streak-info {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .streak-count {
+            font-size: 1.1em;
+            font-weight: bold;
+            color: #6a8baf;
+        }
+        .complete-day-btn {
+            background: #6a8baf;
+            color: white;
+            border: none;
+            padding: 6px 12px;
+            border-radius: 15px;
+            cursor: pointer;
+            font-size: 0.9em;
+            transition: all 0.3s ease;
+        }
+        .complete-day-btn:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+        }
+        .complete-day-btn:hover:not(:disabled) {
+            background: #5d7b9b;
+        }
         .day-selector {
             display: flex;
             overflow-x: auto;
@@ -112,12 +149,21 @@
 <body>
     <div class="container">
         <h1 class="schedule-header">My Weekly Schedule</h1>
+        
+        <div class="streak-container">
+            <div class="streak-info">
+                <i class="fas fa-fire" style="color: #6a8baf;"></i>
+                <div class="streak-count"><span id="streakCount">0</span> days</div>
+            </div>
+            <button id="completeDay" class="complete-day-btn">Complete Day</button>
+        </div>
+
         <div class="day-selector" id="daySelector"></div>
         <div class="schedule-content" id="scheduleContent"></div>
     </div>
 
     <script>
-       const schedule = {
+        const schedule = {
             "Mon,Thurs,Friday": [
                 {"icon": "bed", "time": "7:10 - 9:00 AM", "activity": "Wake up, read the newspaper"},
                 {"icon": "graduation-cap", "time": "9:00 AM - 4:00 PM", "activity": "Classes"},
@@ -153,12 +199,50 @@
                 {"icon": "podcast", "time": "7:00 - 8:00 PM", "activity": "Productivity"},
                 {"icon": "utensils", "time": "8:00 - 9:00 PM", "activity": "Dinner"},
                 {"icon": "laptop", "time": "9:30 - 11:30 PM", "activity": "MERN stack work: Learning/building projects"}
-            ],
-            // Other days remain the same as in previous versions
+            ]
         };
 
         const daySelector = document.getElementById('daySelector');
         const scheduleContent = document.getElementById('scheduleContent');
+        const streakCountElement = document.getElementById('streakCount');
+        const completeDayButton = document.getElementById('completeDay');
+
+        // Load streak count from localStorage
+        let streakCount = parseInt(localStorage.getItem('streakCount')) || 0;
+        let lastCompletedDate = localStorage.getItem('lastCompletedDate');
+        streakCountElement.textContent = streakCount;
+
+        // Check if button should be enabled
+        function updateButtonState() {
+            const now = new Date();
+            const currentHour = now.getHours();
+            const isButtonTime = currentHour >= 22; // 10 PM or later
+            
+            completeDayButton.disabled = !isButtonTime || 
+                                       lastCompletedDate === now.toDateString();
+        }
+
+        // Update button state every minute
+        setInterval(updateButtonState, 60000);
+        updateButtonState();
+
+        completeDayButton.addEventListener('click', () => {
+            const now = new Date();
+            const today = now.toDateString();
+
+            if (lastCompletedDate !== today) {
+                streakCount++;
+                lastCompletedDate = today;
+                
+                // Save to localStorage
+                localStorage.setItem('streakCount', streakCount);
+                localStorage.setItem('lastCompletedDate', lastCompletedDate);
+                
+                // Update display
+                streakCountElement.textContent = streakCount;
+                completeDayButton.disabled = true;
+            }
+        });
 
         Object.keys(schedule).forEach((day, index) => {
             const dayBtn = document.createElement('button');

@@ -117,8 +117,8 @@
     </div>
 
     <script>
-        const schedule = {
-            "Monday": [
+       const schedule = {
+            "Mon,Thurs,Friday": [
                 {"icon": "bed", "time": "7:10 - 9:00 AM", "activity": "Wake up, read the newspaper"},
                 {"icon": "graduation-cap", "time": "9:00 AM - 4:00 PM", "activity": "Classes"},
                 {"icon": "book", "time": "4:10 - 6:00 PM", "activity": "Library: Study academic subjects"},
@@ -145,25 +145,7 @@
                 {"icon": "podcast", "time": "7:00 - 8:00 PM", "activity": "Productivity"},
                 {"icon": "code", "time": "9:30 - 11:30 PM", "activity": "DSA with C++"}
             ],
-            "Thursday": [
-                {"icon": "bed", "time": "7:10 - 9:00 AM", "activity": "Wake up, read the newspaper"},
-                {"icon": "graduation-cap", "time": "9:00 AM - 4:00 PM", "activity": "Classes"},
-                {"icon": "book", "time": "4:10 - 6:00 PM", "activity": "Library: Study academic subjects"},
-                {"icon": "mobile-alt", "time": "6:00 - 7:00 PM", "activity": "Break: Refresh, check Instagram, messages"},
-                {"icon": "podcast", "time": "7:00 - 8:00 PM", "activity": "Productivity: Books, YouTube, Podcasts"},
-                {"icon": "utensils", "time": "8:00 - 9:00 PM", "activity": "Dinner"},
-                {"icon": "code", "time": "9:30 - 11:30 PM", "activity": "DSA with C++"}
-            ],
-            "Friday": [
-                {"icon": "bed", "time": "7:10 - 9:00 AM", "activity": "Wake up, read the newspaper"},
-                {"icon": "graduation-cap", "time": "9:00 AM - 4:00 PM", "activity": "Classes"},
-                {"icon": "book", "time": "4:10 - 6:00 PM", "activity": "Library: Study academic subjects"},
-                {"icon": "mobile-alt", "time": "6:00 - 7:00 PM", "activity": "Break: Refresh, check Instagram, messages"},
-                {"icon": "podcast", "time": "7:00 - 8:00 PM", "activity": "Productivity: Books, YouTube, Podcasts"},
-                {"icon": "utensils", "time": "8:00 - 9:00 PM", "activity": "Dinner"},
-                {"icon": "code", "time": "9:30 - 11:30 PM", "activity": "DSA with C++"}
-            ],
-            "Saturday": [
+            "Sat,Sunday": [
                 {"icon": "laptop", "time": "10:00 AM - 1:00 PM", "activity": "MERN stack work: Learning/building projects"},
                 {"icon": "utensils", "time": "1:00 - 2:30 PM", "activity": "Lunch"},
                 {"icon": "code", "time": "3:00 - 5:00 PM", "activity": "DSA with C++"},
@@ -172,15 +154,6 @@
                 {"icon": "utensils", "time": "8:00 - 9:00 PM", "activity": "Dinner"},
                 {"icon": "laptop", "time": "9:30 - 11:30 PM", "activity": "MERN stack work: Learning/building projects"}
             ],
-            "Sunday": [
-                {"icon": "laptop", "time": "10:00 AM - 1:00 PM", "activity": "MERN stack work: Learning/building projects"},
-                {"icon": "utensils", "time": "1:00 - 2:30 PM", "activity": "Lunch"},
-                {"icon": "code", "time": "3:00 - 5:00 PM", "activity": "DSA with C++"},
-                {"icon": "coffee", "time": "5:00 - 7:00 PM", "activity": "Break, time pass, relaxation"},
-                {"icon": "podcast", "time": "7:00 - 8:00 PM", "activity": "Productivity"},
-                {"icon": "utensils", "time": "8:00 - 9:00 PM", "activity": "Dinner"},
-                {"icon": "laptop", "time": "9:30 - 11:30 PM", "activity": "MERN stack work: Learning/building projects"}
-            ]
             // Other days remain the same as in previous versions
         };
 
@@ -222,7 +195,7 @@
             });
         }
 
-        showDay('Monday');
+        showDay('Mon,Thurs,Friday');
     </script>
 </body>
 </html>
